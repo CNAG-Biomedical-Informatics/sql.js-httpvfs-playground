@@ -154,7 +154,7 @@
     </div>
     <div class="p-6">
       <Label class="space-y-2">
-        <span>Edit SQL Qery</span>
+        <span>Edit SQL Query</span>
         <CodeJar bind:value={sqlQuery} syntax="sql" {highlight} />
       </Label>
     </div>
