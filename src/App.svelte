@@ -30,7 +30,7 @@
   let sqlQuery = `SELECT * from titles WHERE title_id LIKE "tt00000%";`;
   // let dbUrl = "https://nishad.github.io/sql.js-httpvfs-playground/db/imdb-titles-100000_1024_indexed.db";
   let dbUrl =
-    "https://cnag-biomedical-informatics.github.io/sql.js-httpvfs-playground/db/tgca.db";
+    "https://cnag-biomedical-informatics.github.io/sql.js-httpvfs-playground/db/tcga.db";
   import Prism from "prismjs";
   import "prismjs/components/prism-sql";
 
