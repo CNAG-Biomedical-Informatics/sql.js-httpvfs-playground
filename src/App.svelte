@@ -27,7 +27,7 @@
     { value: "16384", name: "16384" },
     { value: "32768", name: "32768" },
   ];
-  let sqlQuery = `SELECT * from tcag_table;`;
+  let sqlQuery = `SELECT * from tcga_table;`;
   // let dbUrl = "https://nishad.github.io/sql.js-httpvfs-playground/db/imdb-titles-100000_1024_indexed.db";
   let dbUrl =
     "https://cnag-biomedical-informatics.github.io/sql.js-httpvfs-playground/db/tcga.db";
