@@ -30,7 +30,7 @@
     { value: "16384", name: "16384" },
     { value: "32768", name: "32768" },
   ];
-  let sqlQuery = `SELECT * FROM tcga_table WHERE TAR_uuid = '00048fa6-4318-42ef-9709-7dedb0d938b3';`;
+  let sqlQuery = `SELECT * FROM tcga_table WHERE TAR_uuid = '0011a67b-1ba9-4a32-a6b8-7850759a38cf';`;
   // let dbUrl = "https://nishad.github.io/sql.js-httpvfs-playground/db/imdb-titles-100000_1024_indexed.db";
   let dbUrl =
     "https://cnag-biomedical-informatics.github.io/sql.js-httpvfs-playground/db/tcga.db";
@@ -76,6 +76,7 @@
     { key: "REF_uuid", title: "REF_uuid" },
     { key: "TAR_uuid", title: "TAR_uuid" },
     { key: "REF_uuid_URL", title: "REF UUID URL", parseAs: "unsafe-html" },
+    { key: "TAR_uuid_URL", title: "TAR UUID URL", parseAs: "unsafe-html" },
   ];
 
   async function queryDb() {
