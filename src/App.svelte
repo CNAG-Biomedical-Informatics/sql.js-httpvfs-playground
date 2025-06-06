@@ -27,7 +27,7 @@
     { value: "16384", name: "16384" },
     { value: "32768", name: "32768" },
   ];
-  let sqlQuery = `SELECT * from tcga_table;`;
+  let sqlQuery = `SELECT * FROM tcga_table WHERE TAR_uuid = '00048fa6-4318-42ef-9709-7dedb0d938b3';`;
   // let dbUrl = "https://nishad.github.io/sql.js-httpvfs-playground/db/imdb-titles-100000_1024_indexed.db";
   let dbUrl =
     "https://cnag-biomedical-informatics.github.io/sql.js-httpvfs-playground/db/tcga.db";
