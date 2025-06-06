@@ -17,6 +17,9 @@
 
   import { CodeJar } from "@novacbn/svelte-codejar";
 
+  // import "@muonw/powertable/styles/power-table.scss";
+  // import "@muonw/powertable/styles/power-table-mascara.scss";
+
   let pageSize = "1024";
   let pageSizes = [
     { value: "512", name: "512" },
@@ -48,7 +51,32 @@
     footerFilters: false,
     headerText: true,
     headerFilters: false,
+    parseAs: "unsafe-html",
   };
+
+  let ptInstructs = [
+    { key: "RANK", title: "RANK" },
+    { key: "REFERENCE(ID)", title: "REFERENCE(ID)" },
+    { key: "TARGET(ID)", title: "TARGET(ID)" },
+    { key: "FORMAT", title: "FORMAT" },
+    { key: "LENGTH", title: "LENGTH" },
+    { key: "WEIGHTED", title: "WEIGHTED" },
+    { key: "HAMMING-DISTANCE", title: "HAMMING-DISTANCE" },
+    { key: "DISTANCE-Z-SCORE", title: "DISTANCE-Z-SCORE" },
+    { key: "DISTANCE-P-VALUE", title: "DISTANCE-P-VALUE" },
+    { key: "DISTANCE-Z-SCORE(RAND)", title: "DISTANCE-Z-SCORE(RAND)" },
+    { key: "JACCARD-INDEX", title: "JACCARD-INDEX" },
+    { key: "JACCARD-Z-SCORE", title: "JACCARD-Z-SCORE" },
+    { key: "JACCARD-P-VALUE", title: "JACCARD-P-VALUE" },
+    { key: "REFERENCE-VARS", title: "REFERENCE-VARS" },
+    { key: "TARGET-VARS", title: "TARGET-VARS" },
+    { key: "INTERSECT", title: "INTERSECT" },
+    { key: "INTERSECT-RATE(%)", title: "INTERSECT-RATE(%)" },
+    { key: "COMPLETENESS(%)", title: "COMPLETENESS(%)" },
+    { key: "REF_uuid", title: "REF_uuid" },
+    { key: "TAR_uuid", title: "TAR_uuid" },
+    { key: "REF_uuid_URL", title: "REF UUID URL", parseAs: "unsafe-html" },
+  ];
 
   async function queryDb() {
     const worker = await createDbWorker(
@@ -189,7 +217,14 @@
       {/if}
       <div class="p-6">
         <div class="MuonW PowerTable">
-          <PowerTable ptData={result} {ptOptions} />
+          <PowerTable
+            ptData={result}
+            class="text-sm border border-gray-300"
+            headerClass="bg-gray-100 text-left font-semibold"
+            rowClass="hover:bg-gray-50"
+            {ptOptions}
+            {ptInstructs}
+          />
         </div>
       </div>
 
