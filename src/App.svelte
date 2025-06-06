@@ -17,7 +17,7 @@
 
   import { CodeJar } from "@novacbn/svelte-codejar";
 
-  // import "@muonw/powertable/styles/power-table.scss";
+  import "@muonw/powertable/styles/power-table.scss";
   // import "@muonw/powertable/styles/power-table-mascara.scss";
 
   let pageSize = "1024";

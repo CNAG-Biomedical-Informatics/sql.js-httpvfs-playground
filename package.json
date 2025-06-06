@@ -20,6 +20,7 @@
     "flowbite-svelte": "^0.27.11",
     "postcss": "^8.4.14",
     "postcss-load-config": "^4.0.1",
+    "sass": "^1.89.1",
     "svelte": "^3.52.0",
     "svelte-preprocess": "^4.10.7",
     "svelte2tsx": "~0.4.12",
