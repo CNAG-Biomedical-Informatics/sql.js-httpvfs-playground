@@ -32,8 +32,11 @@
   ];
   let sqlQuery = `SELECT * FROM tcga_table WHERE TAR_uuid = '00048fa6-4318-42ef-9709-7dedb0d938b3';`;
   // let dbUrl = "https://nishad.github.io/sql.js-httpvfs-playground/db/imdb-titles-100000_1024_indexed.db";
+  // let dbUrl =
+  // "https://cnag-biomedical-informatics.github.io/sql.js-httpvfs-playground/db/tcga.db";
   let dbUrl =
-    "https://cnag-biomedical-informatics.github.io/sql.js-httpvfs-playground/db/tcga.db";
+    "https://raw.githubusercontent.com/CNAG-Biomedical-Informatics/cbi-datahub/refs/heads/main/sqlite/tcga.db"
+  
   import Prism from "prismjs";
   import "prismjs/components/prism-sql";
 
