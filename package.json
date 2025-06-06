@@ -40,5 +40,6 @@
     "pretty-bytes": "^7.0.0",
     "prismjs": "^1.29.0",
     "sql.js-httpvfs": "^0.8.12"
-  }
+  },
+  "packageManager": "yarn@4.9.2"
 }
