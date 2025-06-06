@@ -49,7 +49,9 @@ const RAW_RUNTIME_STATE =
           ["sql.js-httpvfs-playground", "workspace:."],\
           ["svelte", "npm:3.59.2"],\
           ["svelte-preprocess", "virtual:0a777b19d79e89658f59c311824c2ddd869c4ff909b44ebe4d9501dcb0199b221bbb41b29ebb4ac5fc6c49d57184233ff111da468513e54c2ac388811240506b#npm:4.10.7"],\
+          ["svelte2tsx", "virtual:0a777b19d79e89658f59c311824c2ddd869c4ff909b44ebe4d9501dcb0199b221bbb41b29ebb4ac5fc6c49d57184233ff111da468513e54c2ac388811240506b#npm:0.4.14"],\
           ["tailwindcss", "npm:3.4.17"],\
+          ["typescript", "patch:typescript@npm%3A4.9.5#optional!builtin<compat/typescript>::version=4.9.5&hash=289587"],\
           ["vite", "virtual:0a777b19d79e89658f59c311824c2ddd869c4ff909b44ebe4d9501dcb0199b221bbb41b29ebb4ac5fc6c49d57184233ff111da468513e54c2ac388811240506b#npm:3.2.11"]\
         ],\
         "linkType": "SOFT"\
@@ -666,6 +668,15 @@ const RAW_RUNTIME_STATE =
         "packagePeers": [\
           "@types/supports-color",\
           "supports-color"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["dedent-js", [\
+      ["npm:1.0.1", {\
+        "packageLocation": "../../../../../.yarn/berry/cache/dedent-js-npm-1.0.1-ddf8ce03f4-10c0.zip/node_modules/dedent-js/",\
+        "packageDependencies": [\
+          ["dedent-js", "npm:1.0.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -1427,6 +1438,16 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["lower-case", [\
+      ["npm:2.0.2", {\
+        "packageLocation": "../../../../../.yarn/berry/cache/lower-case-npm-2.0.2-151055f1c2-10c0.zip/node_modules/lower-case/",\
+        "packageDependencies": [\
+          ["lower-case", "npm:2.0.2"],\
+          ["tslib", "npm:2.8.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["lru-cache", [\
       ["npm:10.4.3", {\
         "packageLocation": "../../../../../.yarn/berry/cache/lru-cache-npm-10.4.3-30c10b861a-10c0.zip/node_modules/lru-cache/",\
@@ -1451,7 +1472,7 @@ const RAW_RUNTIME_STATE =
           ["@types/svelte2tsx", null],\
           ["lucide-svelte", "virtual:0a777b19d79e89658f59c311824c2ddd869c4ff909b44ebe4d9501dcb0199b221bbb41b29ebb4ac5fc6c49d57184233ff111da468513e54c2ac388811240506b#npm:0.95.0"],\
           ["svelte", "npm:3.59.2"],\
-          ["svelte2tsx", null]\
+          ["svelte2tsx", "virtual:0a777b19d79e89658f59c311824c2ddd869c4ff909b44ebe4d9501dcb0199b221bbb41b29ebb4ac5fc6c49d57184233ff111da468513e54c2ac388811240506b#npm:0.4.14"]\
         ],\
         "packagePeers": [\
           "@types/svelte2tsx",\
@@ -1710,6 +1731,17 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["no-case", [\
+      ["npm:3.0.4", {\
+        "packageLocation": "../../../../../.yarn/berry/cache/no-case-npm-3.0.4-12884c3d98-10c0.zip/node_modules/no-case/",\
+        "packageDependencies": [\
+          ["lower-case", "npm:2.0.2"],\
+          ["no-case", "npm:3.0.4"],\
+          ["tslib", "npm:2.8.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["node-gyp", [\
       ["npm:11.2.0", {\
         "packageLocation": "./.yarn/unplugged/node-gyp-npm-11.2.0-36aeb0fa50/node_modules/node-gyp/",\
@@ -1827,6 +1859,17 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../../../../.yarn/berry/cache/papaparse-npm-5.5.3-a5461bada4-10c0.zip/node_modules/papaparse/",\
         "packageDependencies": [\
           ["papaparse", "npm:5.5.3"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["pascal-case", [\
+      ["npm:3.1.2", {\
+        "packageLocation": "../../../../../.yarn/berry/cache/pascal-case-npm-3.1.2-35f5b9bff6-10c0.zip/node_modules/pascal-case/",\
+        "packageDependencies": [\
+          ["no-case", "npm:3.0.4"],\
+          ["pascal-case", "npm:3.1.2"],\
+          ["tslib", "npm:2.8.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -2345,7 +2388,9 @@ const RAW_RUNTIME_STATE =
           ["sql.js-httpvfs-playground", "workspace:."],\
           ["svelte", "npm:3.59.2"],\
           ["svelte-preprocess", "virtual:0a777b19d79e89658f59c311824c2ddd869c4ff909b44ebe4d9501dcb0199b221bbb41b29ebb4ac5fc6c49d57184233ff111da468513e54c2ac388811240506b#npm:4.10.7"],\
+          ["svelte2tsx", "virtual:0a777b19d79e89658f59c311824c2ddd869c4ff909b44ebe4d9501dcb0199b221bbb41b29ebb4ac5fc6c49d57184233ff111da468513e54c2ac388811240506b#npm:0.4.14"],\
           ["tailwindcss", "npm:3.4.17"],\
+          ["typescript", "patch:typescript@npm%3A4.9.5#optional!builtin<compat/typescript>::version=4.9.5&hash=289587"],\
           ["vite", "virtual:0a777b19d79e89658f59c311824c2ddd869c4ff909b44ebe4d9501dcb0199b221bbb41b29ebb4ac5fc6c49d57184233ff111da468513e54c2ac388811240506b#npm:3.2.11"]\
         ],\
         "linkType": "SOFT"\
@@ -2506,7 +2551,7 @@ const RAW_RUNTIME_STATE =
           ["sugarss", null],\
           ["svelte", "npm:3.59.2"],\
           ["svelte-preprocess", "virtual:0a777b19d79e89658f59c311824c2ddd869c4ff909b44ebe4d9501dcb0199b221bbb41b29ebb4ac5fc6c49d57184233ff111da468513e54c2ac388811240506b#npm:4.10.7"],\
-          ["typescript", null]\
+          ["typescript", "patch:typescript@npm%3A4.9.5#optional!builtin<compat/typescript>::version=4.9.5&hash=289587"]\
         ],\
         "packagePeers": [\
           "@babel/core",\
@@ -2529,6 +2574,34 @@ const RAW_RUNTIME_STATE =
           "sass",\
           "stylus",\
           "sugarss",\
+          "svelte",\
+          "typescript"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["svelte2tsx", [\
+      ["npm:0.4.14", {\
+        "packageLocation": "../../../../../.yarn/berry/cache/svelte2tsx-npm-0.4.14-e68964a7ba-10c0.zip/node_modules/svelte2tsx/",\
+        "packageDependencies": [\
+          ["svelte2tsx", "npm:0.4.14"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:0a777b19d79e89658f59c311824c2ddd869c4ff909b44ebe4d9501dcb0199b221bbb41b29ebb4ac5fc6c49d57184233ff111da468513e54c2ac388811240506b#npm:0.4.14", {\
+        "packageLocation": "./.yarn/__virtual__/svelte2tsx-virtual-3d352a14b9/6/.yarn/berry/cache/svelte2tsx-npm-0.4.14-e68964a7ba-10c0.zip/node_modules/svelte2tsx/",\
+        "packageDependencies": [\
+          ["@types/svelte", null],\
+          ["@types/typescript", null],\
+          ["dedent-js", "npm:1.0.1"],\
+          ["pascal-case", "npm:3.1.2"],\
+          ["svelte", "npm:3.59.2"],\
+          ["svelte2tsx", "virtual:0a777b19d79e89658f59c311824c2ddd869c4ff909b44ebe4d9501dcb0199b221bbb41b29ebb4ac5fc6c49d57184233ff111da468513e54c2ac388811240506b#npm:0.4.14"],\
+          ["typescript", "patch:typescript@npm%3A4.9.5#optional!builtin<compat/typescript>::version=4.9.5&hash=289587"]\
+        ],\
+        "packagePeers": [\
+          "@types/svelte",\
+          "@types/typescript",\
           "svelte",\
           "typescript"\
         ],\
@@ -2627,6 +2700,24 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../../../../.yarn/berry/cache/ts-interface-checker-npm-0.1.13-0c7b064494-10c0.zip/node_modules/ts-interface-checker/",\
         "packageDependencies": [\
           ["ts-interface-checker", "npm:0.1.13"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["tslib", [\
+      ["npm:2.8.1", {\
+        "packageLocation": "../../../../../.yarn/berry/cache/tslib-npm-2.8.1-66590b21b8-10c0.zip/node_modules/tslib/",\
+        "packageDependencies": [\
+          ["tslib", "npm:2.8.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["typescript", [\
+      ["patch:typescript@npm%3A4.9.5#optional!builtin<compat/typescript>::version=4.9.5&hash=289587", {\
+        "packageLocation": "../../../../../.yarn/berry/cache/typescript-patch-32ada147aa-10c0.zip/node_modules/typescript/",\
+        "packageDependencies": [\
+          ["typescript", "patch:typescript@npm%3A4.9.5#optional!builtin<compat/typescript>::version=4.9.5&hash=289587"]\
         ],\
         "linkType": "HARD"\
       }]\
