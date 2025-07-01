@@ -3,6 +3,7 @@
   import { Spinner, Alert } from "flowbite-svelte";
   import { Heading, P, A } from "flowbite-svelte";
   import { Select, Input, Label, Helper } from "flowbite-svelte";
+  import { onMount } from "svelte";
 
   import { createDbWorker } from "sql.js-httpvfs";
   import { PowerTable } from "@muonw/powertable";
@@ -30,13 +31,13 @@
     { value: "16384", name: "16384" },
     { value: "32768", name: "32768" },
   ];
-  let sqlQuery = `SELECT * FROM tcga_table WHERE "TAR-UUID" = '0011a67b-1ba9-4a32-a6b8-7850759a38cf';`;
+  let sqlQuery = `SELECT * FROM tcga_table LIMIT 20';`;
   // let dbUrl = "https://nishad.github.io/sql.js-httpvfs-playground/db/imdb-titles-100000_1024_indexed.db";
   // let dbUrl =
   // "https://cnag-biomedical-informatics.github.io/sql.js-httpvfs-playground/db/tcga.db";
   let dbUrl =
-    "https://raw.githubusercontent.com/CNAG-Biomedical-Informatics/cbi-datahub/refs/heads/main/sqlite/tcga.db"
-  
+    "https://raw.githubusercontent.com/CNAG-Biomedical-Informatics/cbi-datahub/refs/heads/main/sqlite/tcga.db";
+
   import Prism from "prismjs";
   import "prismjs/components/prism-sql";
 
@@ -49,6 +50,9 @@
   );
   const wasmUrl = new URL("sql.js-httpvfs/dist/sql-wasm.wasm", import.meta.url);
 
+  let sqliteFiles = [];
+  let activeFile = null;
+
   let ptOptions = {
     footerText: false,
     footerFilters: false,
@@ -57,39 +61,89 @@
     parseAs: "unsafe-html",
   };
 
-  let ptInstructs = [
-    { key: "RANK", title: "RANK" },
-    { key: "REFERENCE(ID)", title: "REFERENCE(ID)" },
-    { key: "TARGET(ID)", title: "TARGET(ID)" },
-    // { key: "FORMAT", title: "FORMAT" },
-    { key: "LENGTH", title: "LENGTH" },
-    // { key: "WEIGHTED", title: "WEIGHTED" },
-    { key: "HAMMING-DISTANCE", title: "HAMMING-DISTANCE" },
-    { key: "DISTANCE-Z-SCORE", title: "DISTANCE-Z-SCORE" },
-    { key: "DISTANCE-P-VALUE", title: "DISTANCE-P-VALUE" },
-    { key: "DISTANCE-Z-SCORE(RAND)", title: "DISTANCE-Z-SCORE(RAND)" },
-    { key: "JACCARD-INDEX", title: "JACCARD-INDEX" },
-    { key: "JACCARD-Z-SCORE", title: "JACCARD-Z-SCORE" },
-    { key: "JACCARD-P-VALUE", title: "JACCARD-P-VALUE" },
-    { key: "REFERENCE-VARS", title: "REFERENCE-VARS" },
-    { key: "TARGET-VARS", title: "TARGET-VARS" },
-    { key: "INTERSECT", title: "INTERSECT" },
-    { key: "INTERSECT-RATE(%)", title: "INTERSECT-RATE(%)" },
-    { key: "COMPLETENESS(%)", title: "COMPLETENESS(%)" },
-    { key: "REF-UUID", title: "REF-UUID" },
-    { key: "TAR-UUID", title: "TAR-UUID" },
-    { key: "REF-UUID-URL", title: "REF-UUID-URL", parseAs: "unsafe-html" },
-    { key: "TAR-UUID-URL", title: "TAR-UUID-URL", parseAs: "unsafe-html" },
-  ];
+  let ptInstructs = [];
 
-  async function queryDb() {
+  function updateInstructs(data) {
+    if (Array.isArray(data) && data.length > 0) {
+      ptInstructs = Object.keys(data[0]).map((key) => ({
+        key,
+        title: key,
+        ...(key.includes("URL") ? { parseAs: "unsafe-html" } : {}),
+      }));
+    }
+    return ptInstructs;
+  }
+
+  async function getSqliteFiles() {
+    const apiUrl =
+      "https://api.github.com/repos/CNAG-Biomedical-Informatics/cbi-datahub/contents/sqlite";
+    try {
+      const res = await fetch(apiUrl);
+      if (!res.ok) return [];
+      const data = await res.json();
+      return data
+        .filter(
+          (item) =>
+            item.type === "file" &&
+            (item.name.endsWith(".db") || item.name.endsWith(".sqlite"))
+        )
+        .map((item) => ({
+          name: item.name,
+          url:
+            item.download_url ||
+            `https://raw.githubusercontent.com/CNAG-Biomedical-Informatics/cbi-datahub/main/sqlite/${item.name}`,
+        }));
+    } catch (e) {
+      console.error(e);
+      return [];
+    }
+  }
+
+  async function loadDb(file) {
+    const dbUrl = file.url;
+
+    // Map of table ➔ custom WHERE clauses
+    const exampleQueries = {
+      tcga_table: `"TAR-UUID" = '0011a67b-1ba9-4a32-a6b8-7850759a38cf'`,
+      omim_table: `"TAR-UUID" = '100100'`,
+    };
+
+    const tablesData = await queryDb(
+      dbUrl,
+      "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
+    );
+    if (tablesData.result.length) {
+      const table = tablesData.result[0].name;
+      console.log("Selected table: ", table);
+
+      // Override if this table has a special filter
+      if (Object.keys(exampleQueries).includes(table)) {
+        console.log("Using example query for table:", table);
+        sqlQuery = `SELECT * FROM "${table}" WHERE ${exampleQueries[table]};`;
+      }
+
+      await runQuery(dbUrl, sqlQuery);
+    } else {
+      sqlQuery = "";
+      result = [];
+    }
+  }
+
+  onMount(async () => {
+    sqliteFiles = await getSqliteFiles();
+    if (sqliteFiles.length) {
+      await loadDb(sqliteFiles[0]);
+    }
+  });
+
+  async function queryDb(url = dbUrl, query = sqlQuery) {
     const worker = await createDbWorker(
       [
         {
           from: "inline",
           config: {
             serverMode: "full",
-            url: dbUrl,
+            url,
             requestChunkSize: Number(pageSize),
           },
         },
@@ -97,7 +151,7 @@
       workerUrl.toString(),
       wasmUrl.toString()
     );
-    const result = await worker.db.query(sqlQuery);
+    const result = await worker.db.query(query);
     const bytesRead = await worker.worker.bytesRead;
     const stats = await worker.worker.getStats();
     return { result, bytesRead, stats };
@@ -113,14 +167,15 @@
   let totalBytes;
   let totalRequests;
 
-  async function runQuery() {
+  async function runQuery(url = dbUrl, query = sqlQuery) {
     result = null;
     querying = true;
     error = false;
-    let queryData = pTime(queryDb)();
+    let queryData = pTime(() => queryDb(url, query))();
     await queryData
       .then((data) => {
         result = data.result;
+        updateInstructs(result);
         timeTaken = queryData.time;
         bytesRead = data.bytesRead;
         totalRequests = data.stats.totalRequests;
@@ -137,6 +192,7 @@
         console.log("Query Error: ", queryError.message);
         console.log(queryError);
         querying = false;
+        updateInstructs([]);
         jsonFile = null;
       });
   }
@@ -149,17 +205,10 @@
         >sql.js-httpvfs Playground</Heading
       >
       <P class="my-4 text-gray-500">
-        <code>sql.js-httpvfs</code> is a fork of and wrapper around sql.js to provide
-        a read-only HTTP-Range-request based virtual file system for SQLite. It allows
-        hosting an SQLite database on a static file hoster and querying that database
-        from the browser without fully downloading it.</P
-      >
-      <P class="mb-4"
-        >Provide the URL of any SQLite database file and edit the default SQL
-        Query.</P
-      >
-      <A href="https://github.com/phiresky/sql.js-httpvfs"
-        >Read more
+        This is a fork of nishad's sql.js-httpvfs playground
+      </P>
+      <A href="https://github.com/nishad/sql.js-httpvfs-playground"
+        >Check it out here:
         <svg
           class="ml-1 w-6 h-6"
           fill="currentColor"
@@ -174,7 +223,26 @@
       </A>
     </div>
 
-    <div class="p-6">
+    {#if sqliteFiles.length}
+      <div class="border-b mb-4">
+        <nav class="flex space-x-4" aria-label="Tabs">
+          {#each sqliteFiles as f}
+            <button
+              class={`py-2 px-4 text-sm font-medium border-b-2 ${
+                activeFile === f.name
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-gray-500"
+              }`}
+              on:click={() => loadDb(f)}
+            >
+              {f.name}
+            </button>
+          {/each}
+        </nav>
+      </div>
+    {/if}
+
+    <!-- <div class="p-6">
       <Label class="space-y-2">
         <span>SQLite DB file URL</span>
         <Input type="url" placeholder="" size="md" bind:value={dbUrl} />
@@ -183,7 +251,7 @@
         >Select page size
         <Select class="mt-2" items={pageSizes} bind:value={pageSize} />
       </Label>
-    </div>
+    </div> -->
     <div class="p-6">
       <Label class="space-y-2">
         <span>Edit SQL Query</span>
