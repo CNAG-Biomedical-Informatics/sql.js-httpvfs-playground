@@ -36,8 +36,8 @@
   // let dbUrl =
   // "https://cnag-biomedical-informatics.github.io/sql.js-httpvfs-playground/db/tcga.db";
   let dbUrl =
-    "https://raw.githubusercontent.com/CNAG-Biomedical-Informatics/cbi-datahub/refs/heads/main/sqlite/tcga.db"
-  
+    "https://raw.githubusercontent.com/CNAG-Biomedical-Informatics/cbi-datahub/refs/heads/main/sqlite/tcga.db";
+
   import Prism from "prismjs";
   import "prismjs/components/prism-sql";
 
@@ -64,11 +64,14 @@
   let ptInstructs = [];
 
   function updateInstructs(data) {
-    if (data && data.length) {
-      ptInstructs = Object.keys(data[0]).map((k) => ({ key: k, title: k }));
-    } else {
-      ptInstructs = [];
+    if (Array.isArray(data) && data.length > 0) {
+      ptInstructs = Object.keys(data[0]).map((key) => ({
+        key,
+        title: key,
+        ...(key.includes("URL") ? { parseAs: "unsafe-html" } : {}),
+      }));
     }
+    return ptInstructs;
   }
 
   async function getSqliteFiles() {
@@ -221,8 +224,8 @@
             <button
               class={`py-2 px-4 text-sm font-medium border-b-2 ${
                 activeFile === f.name
-                  ? 'border-blue-600 text-blue-600'
-                  : 'border-transparent text-gray-500'
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-gray-500"
               }`}
               on:click={() => loadDb(f)}
             >
