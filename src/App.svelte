@@ -205,17 +205,10 @@
         >sql.js-httpvfs Playground</Heading
       >
       <P class="my-4 text-gray-500">
-        <code>sql.js-httpvfs</code> is a fork of and wrapper around sql.js to provide
-        a read-only HTTP-Range-request based virtual file system for SQLite. It allows
-        hosting an SQLite database on a static file hoster and querying that database
-        from the browser without fully downloading it.</P
-      >
-      <P class="mb-4"
-        >Provide the URL of any SQLite database file and edit the default SQL
-        Query.</P
-      >
-      <A href="https://github.com/phiresky/sql.js-httpvfs"
-        >Read more
+        This is a fork of nishad's sql.js-httpvfs playground
+      </P>
+      <A href="https://github.com/nishad/sql.js-httpvfs-playground"
+        >Check it out here:
         <svg
           class="ml-1 w-6 h-6"
           fill="currentColor"
@@ -249,7 +242,7 @@
       </div>
     {/if}
 
-    <div class="p-6">
+    <!-- <div class="p-6">
       <Label class="space-y-2">
         <span>SQLite DB file URL</span>
         <Input type="url" placeholder="" size="md" bind:value={dbUrl} />
@@ -258,7 +251,7 @@
         >Select page size
         <Select class="mt-2" items={pageSizes} bind:value={pageSize} />
       </Label>
-    </div>
+    </div> -->
     <div class="p-6">
       <Label class="space-y-2">
         <span>Edit SQL Query</span>
