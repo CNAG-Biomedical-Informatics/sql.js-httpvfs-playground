@@ -31,7 +31,7 @@
     { value: "16384", name: "16384" },
     { value: "32768", name: "32768" },
   ];
-  let sqlQuery = `SELECT * FROM tcga_table WHERE "TAR-UUID" = '0011a67b-1ba9-4a32-a6b8-7850759a38cf';`;
+  let sqlQuery = `SELECT * FROM tcga_table LIMIT 20';`;
   // let dbUrl = "https://nishad.github.io/sql.js-httpvfs-playground/db/imdb-titles-100000_1024_indexed.db";
   // let dbUrl =
   // "https://cnag-biomedical-informatics.github.io/sql.js-httpvfs-playground/db/tcga.db";
@@ -100,16 +100,29 @@
   }
 
   async function loadDb(file) {
-    activeFile = file.name;
-    dbUrl = file.url;
+    const dbUrl = file.url;
+
+    // Map of table ➔ custom WHERE clauses
+    const exampleQueries = {
+      tcga_table: `"TAR-UUID" = '0011a67b-1ba9-4a32-a6b8-7850759a38cf'`,
+      omim_table: `"TAR-UUID" = '100100'`,
+    };
+
     const tablesData = await queryDb(
-      file.url,
+      dbUrl,
       "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
     );
     if (tablesData.result.length) {
       const table = tablesData.result[0].name;
-      sqlQuery = `SELECT * FROM "${table}" LIMIT 20;`;
-      await runQuery(file.url, sqlQuery);
+      console.log("Selected table: ", table);
+
+      // Override if this table has a special filter
+      if (Object.keys(exampleQueries).includes(table)) {
+        console.log("Using example query for table:", table);
+        sqlQuery = `SELECT * FROM "${table}" WHERE ${exampleQueries[table]};`;
+      }
+
+      await runQuery(dbUrl, sqlQuery);
     } else {
       sqlQuery = "";
       result = [];
