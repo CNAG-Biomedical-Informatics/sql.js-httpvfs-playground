@@ -100,7 +100,7 @@
   }
 
   async function loadDb(file) {
-    const dbUrl = file.url;
+    dbUrl = file.url;
 
     // Map of table ➔ custom WHERE clauses
     const exampleQueries = {
@@ -189,7 +189,7 @@
       .catch((queryError) => {
         error = true;
         errorMessage = queryError.message;
-        console.log("Query Error: ", queryError.message);
+        console.log("Query Error message: ", errorMessage);
         console.log(queryError);
         querying = false;
         updateInstructs([]);
@@ -259,7 +259,7 @@
       </Label>
     </div>
     <div class="p-6">
-      <Button on:click={runQuery}>
+      <Button on:click={() => runQuery()}>
         {#if querying}
           <Spinner class="mr-3" size="4" color="white" /> Querying ...
         {:else}
