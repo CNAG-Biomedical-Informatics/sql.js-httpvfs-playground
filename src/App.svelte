@@ -66,14 +66,21 @@
 
   let ptInstructs = [];
 
+  function inferColValsType(value) {
+    if (!isNaN(value) && value !== "") return "number";
+    return "string";
+  }
+
   function updateInstructs(data) {
     if (Array.isArray(data) && data.length > 0) {
       ptInstructs = Object.keys(data[0]).map((key) => ({
         key,
         title: key,
+        valueType: inferColValsType(data[0][key]),
         ...(key.includes("URL") ? { parseAs: "unsafe-html" } : {}),
       }));
     }
+    console.log("ptInstructs: ", ptInstructs);
     return ptInstructs;
   }
 
@@ -175,6 +182,10 @@
 
   function runBuilderQuery() {
     if (!activeTable || !selectedColumn || !searchValue) return;
+
+    console.log(
+      `Running query on table: ${activeTable}, column: ${selectedColumn}, search value: ${searchValue}`
+    );
     const escaped = searchValue.replace(/'/g, "''");
     sqlQuery = `SELECT * FROM "${activeTable}" WHERE "${selectedColumn}" LIKE '%${escaped}%' LIMIT 20;`;
     runQuery(dbUrl, sqlQuery);
@@ -254,22 +265,15 @@
         </nav>
       </div>
     {/if}
-
-    <!-- <div class="p-6">
-      <Label class="space-y-2">
-        <span>SQLite DB file URL</span>
-        <Input type="url" placeholder="" size="md" bind:value={dbUrl} />
-      </Label>
-      <Label class="space-y-2"
-        >Select page size
-        <Select class="mt-2" items={pageSizes} bind:value={pageSize} />
-      </Label>
-    </div> -->
     <div class="p-6 space-y-4">
       <div class="space-y-2">
         <Label class="space-y-2">
           <span>Column</span>
-          <input list="columns" class="border rounded w-full p-2" bind:value={selectedColumn} />
+          <input
+            list="columns"
+            class="border rounded w-full p-2"
+            bind:value={selectedColumn}
+          />
           <datalist id="columns">
             {#each ptInstructs as col}
               <option value={col.key} />
@@ -283,7 +287,9 @@
         <Button size="sm" on:click={runBuilderQuery}>Search</Button>
       </div>
       <details>
-        <summary class="cursor-pointer underline">Expand to show and modify the SQL query</summary>
+        <summary class="cursor-pointer underline"
+          >Expand to show and modify the SQL query</summary
+        >
         <div class="mt-4">
           <Label class="space-y-2">
             <span>Edit SQL Query</span>
