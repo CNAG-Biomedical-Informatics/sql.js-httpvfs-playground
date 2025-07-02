@@ -1,8 +1,8 @@
 {
-  "name": "sql.js-httpvfs-playground",
+  "name": "cnag-bmi-sql.js-httpvfs-playground",
   "private": true,
   "author": {
-    "name": "Nishad Thalhath"
+    "name": "Ivo Christopher Leist"
   },
   "version": "0.1.6",
   "type": "module",
