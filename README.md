@@ -54,7 +54,7 @@ Compared to the one by @nishad, this version includes:
 | --- | --- |
 | Creation of this fork | ICL |
 | Adaptation of the original playground to the CNAG use case | ICL |
-| Running of Pheno-Ranker to generate SQLite databases | MR |
+| Running of Pheno-Ranker and the creation of the SQLite databases | MR |
 
 
 ## 🤖 GenAI tools contributions
