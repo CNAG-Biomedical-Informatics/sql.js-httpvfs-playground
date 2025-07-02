@@ -12,7 +12,7 @@ This is a fork of [@nishad](https://github.com/nishad)’s [sql.js-httpvfs playg
 
 ## 🎯 Use Case
 
-This tool lets you explore **Pheno-Ranker results** of:
+This tool lets you explore [**Pheno-Ranker results**](https://github.com/CNAG-Biomedical-Informatics/pheno-ranker) of:
 
 - 🧬 [OMIM](https://omim.org)
 - 🧫 [TCGA](https://www.cancergenomeinterpreter.org/tcga)
@@ -22,7 +22,7 @@ from this live playground:
 👉 [**cnag-biomedical-informatics.github.io/sql.js-httpvfs-playground**](https://cnag-biomedical-informatics.github.io/sql.js-httpvfs-playground)
 
 The databases are served directly from:  
-📁 [CNAG Biomedical Informatics - SQLite Folder](https://github.com/CNAG-Biomedical-Informatics/cbi-datahub/tree/main/sqlite)
+📁 [CNAG Biomedical Informatics - CBI datahub ](https://github.com/CNAG-Biomedical-Informatics/cbi-datahub/tree/main/sqlite)
 
 ---
 
