@@ -23,6 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 
-# Rendered HTML
+# rendered html files
 README.html
 README_files
