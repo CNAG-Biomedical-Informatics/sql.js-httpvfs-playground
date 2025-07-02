@@ -71,12 +71,22 @@
     return "string";
   }
 
-  function updateInstructs(data) {
+  async function getColumnTypes(table) {
+    const { result } = await queryDb(dbUrl, `PRAGMA table_info('${table}')`);
+    const types = {};
+    result.forEach((col) => {
+      types[col.name] = col.type || "";
+    });
+    return types;
+  }
+
+  async function updateInstructs(data, table = activeTable) {
     if (Array.isArray(data) && data.length > 0) {
+      const colTypes = await getColumnTypes(table);
       ptInstructs = Object.keys(data[0]).map((key) => ({
         key,
         title: key,
-        valueType: inferColValsType(data[0][key]),
+        valueType: colTypes[key] || inferColValsType(data[0][key]),
         ...(key.includes("URL") ? { parseAs: "unsafe-html" } : {}),
       }));
     }
@@ -186,8 +196,16 @@
     console.log(
       `Running query on table: ${activeTable}, column: ${selectedColumn}, search value: ${searchValue}`
     );
-    const escaped = searchValue.replace(/'/g, "''");
-    sqlQuery = `SELECT * FROM "${activeTable}" WHERE "${selectedColumn}" LIKE '%${escaped}%' LIMIT 20;`;
+    const col = ptInstructs.find((c) => c.key === selectedColumn);
+    const isNumber = col && /int|real|num|float/i.test(col.valueType);
+    let clause;
+    if (isNumber && !isNaN(searchValue)) {
+      clause = `"${selectedColumn}" = ${Number(searchValue)}`;
+    } else {
+      const escaped = searchValue.replace(/'/g, "''");
+      clause = `"${selectedColumn}" LIKE '%${escaped}%'`;
+    }
+    sqlQuery = `SELECT * FROM "${activeTable}" WHERE ${clause} LIMIT 20;`;
     runQuery(dbUrl, sqlQuery);
   }
 
@@ -197,9 +215,9 @@
     error = false;
     let queryData = pTime(() => queryDb(url, query))();
     await queryData
-      .then((data) => {
+      .then(async (data) => {
         result = data.result;
-        updateInstructs(result);
+        await updateInstructs(result, activeTable);
         timeTaken = queryData.time;
         bytesRead = data.bytesRead;
         totalRequests = data.stats.totalRequests;
@@ -216,7 +234,7 @@
         console.log("Query Error message: ", errorMessage);
         console.log(queryError);
         querying = false;
-        updateInstructs([]);
+        await updateInstructs([], activeTable);
         jsonFile = null;
       });
   }
