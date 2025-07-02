@@ -31,7 +31,10 @@
     { value: "16384", name: "16384" },
     { value: "32768", name: "32768" },
   ];
-  let sqlQuery = `SELECT * FROM tcga_table LIMIT 20';`;
+  let sqlQuery = `SELECT * FROM tcga_table LIMIT 20;`;
+  let activeTable = "";
+  let selectedColumn = "";
+  let searchValue = "";
   // let dbUrl = "https://nishad.github.io/sql.js-httpvfs-playground/db/imdb-titles-100000_1024_indexed.db";
   // let dbUrl =
   // "https://cnag-biomedical-informatics.github.io/sql.js-httpvfs-playground/db/tcga.db";
@@ -114,12 +117,15 @@
     );
     if (tablesData.result.length) {
       const table = tablesData.result[0].name;
+      activeTable = table;
       console.log("Selected table: ", table);
 
       // Override if this table has a special filter
       if (Object.keys(exampleQueries).includes(table)) {
         console.log("Using example query for table:", table);
         sqlQuery = `SELECT * FROM "${table}" WHERE ${exampleQueries[table]};`;
+      } else {
+        sqlQuery = `SELECT * FROM "${table}" LIMIT 20;`;
       }
 
       await runQuery(dbUrl, sqlQuery);
@@ -166,6 +172,13 @@
   let jsonFile;
   let totalBytes;
   let totalRequests;
+
+  function runBuilderQuery() {
+    if (!activeTable || !selectedColumn || !searchValue) return;
+    const escaped = searchValue.replace(/'/g, "''");
+    sqlQuery = `SELECT * FROM "${activeTable}" WHERE "${selectedColumn}" LIKE '%${escaped}%' LIMIT 20;`;
+    runQuery(dbUrl, sqlQuery);
+  }
 
   async function runQuery(url = dbUrl, query = sqlQuery) {
     result = null;
@@ -252,20 +265,41 @@
         <Select class="mt-2" items={pageSizes} bind:value={pageSize} />
       </Label>
     </div> -->
-    <div class="p-6">
-      <Label class="space-y-2">
-        <span>Edit SQL Query</span>
-        <CodeJar bind:value={sqlQuery} syntax="sql" {highlight} />
-      </Label>
-    </div>
-    <div class="p-6">
-      <Button on:click={() => runQuery()}>
-        {#if querying}
-          <Spinner class="mr-3" size="4" color="white" /> Querying ...
-        {:else}
-          Run Query
-        {/if}
-      </Button>
+    <div class="p-6 space-y-4">
+      <div class="space-y-2">
+        <Label class="space-y-2">
+          <span>Column</span>
+          <input list="columns" class="border rounded w-full p-2" bind:value={selectedColumn} />
+          <datalist id="columns">
+            {#each ptInstructs as col}
+              <option value={col.key} />
+            {/each}
+          </datalist>
+        </Label>
+        <Label class="space-y-2">
+          <span>Search value</span>
+          <Input type="text" bind:value={searchValue} />
+        </Label>
+        <Button size="sm" on:click={runBuilderQuery}>Search</Button>
+      </div>
+      <details>
+        <summary class="cursor-pointer underline">Expand to show and modify the SQL query</summary>
+        <div class="mt-4">
+          <Label class="space-y-2">
+            <span>Edit SQL Query</span>
+            <CodeJar bind:value={sqlQuery} syntax="sql" {highlight} />
+          </Label>
+          <div class="mt-2">
+            <Button on:click={() => runQuery()}>
+              {#if querying}
+                <Spinner class="mr-3" size="4" color="white" /> Querying ...
+              {:else}
+                Run Query
+              {/if}
+            </Button>
+          </div>
+        </div>
+      </details>
     </div>
 
     {#if result}
