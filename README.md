@@ -48,7 +48,7 @@ Compared to the one by @nishad, this version includes:
 
 ## 👤 Humans (at [CNAG](https://www.cnag.eu))
 - [Ivo Christopher Leist (ICL)](https://github.com/IvoLeist), PhD student
-- [Manuel Rueda (MR)](https://github.com/ManuelRueda), PhD
+- [Manuel Rueda (MR)](https://github.com/mrueda), PhD
 
 | Contributions | 👤 |
 | --- | --- |
