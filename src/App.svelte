@@ -62,6 +62,23 @@
 
   let ptInstructs = [];
 
+  function parseQuery(query = sqlQuery) {
+    const fromMatch = query.match(/from\s+\"?([\w-.]+)\"?/i);
+    if (fromMatch) {
+      activeTable = fromMatch[1];
+    }
+    const whereMatch = query.match(/where\s+\"?([^\"\s]+)\"?\s*(?:=|like)\s*['"]?([^'";]*)/i);
+    if (whereMatch) {
+      selectedColumn = whereMatch[1];
+      searchValue = whereMatch[2];
+    } else {
+      selectedColumn = "";
+      searchValue = "";
+    }
+  }
+
+  $: parseQuery(sqlQuery);
+
   function inferColValsType(value) {
     if (!isNaN(value) && value !== "") return "number";
     return "string";
