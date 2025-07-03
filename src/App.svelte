@@ -280,6 +280,7 @@
   <div class="mx-auto max-w-screen-xl">
     {#if sqliteFiles.length}
       <div class="border-b mb-4">
+        <!-- TODO: replace below with flowbite Tabs -->
         <nav class="space-x-4" aria-label="Tabs">
           {#each sqliteFiles as f}
             <button
@@ -316,8 +317,8 @@
       <Input type="text" bind:value={searchValue} on:input={updateSqlQuery} />
     </Label>
     <details>
-      <summary class="cursor-pointer"
-        >Expand to show and modify the SQL query</summary
+      <summary class="cursor-pointer pt-2 pb-1 text-sm text-gray-500">
+        Expand to show and modify the SQL query</summary
       >
       <Label>
         <CodeJar bind:value={sqlQuery} syntax="sql" {highlight} />
@@ -325,7 +326,7 @@
     </details>
     <Button on:click={() => runQuery()}>
       {#if querying}
-        <Spinner /> Querying ...
+        <Spinner class="me-3" size="4" /> Querying ...
       {:else}
         Run Query
       {/if}
@@ -333,6 +334,7 @@
 
     {#if result}
       {#if timeTaken}
+        <!-- replace with icon mouse-over -->
         <Alert>
           Query took <span class="font-medium">{timeTaken}</span> ms to read
           <span class="font-medium">{prettyBytes(bytesRead)}</span>

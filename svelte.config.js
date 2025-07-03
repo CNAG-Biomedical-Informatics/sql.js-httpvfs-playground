@@ -1,11 +1,12 @@
-import preprocess from "svelte-preprocess";
+// svelte.config.js
+import preprocess from 'svelte-preprocess';
+import adapter from '@sveltejs/adapter-auto';
 
-const config = {
+export default /** @type {import('@sveltejs/kit').Config} */({
+  kit: {
+    adapter: adapter(),
+  },
   preprocess: [
-    preprocess({
-      postcss: true,
-    }),
-  ],
-};
-
-export default config;
+    preprocess({ postcss: true })
+  ]
+});
