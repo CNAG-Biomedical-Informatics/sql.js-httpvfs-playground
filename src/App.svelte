@@ -83,7 +83,8 @@
 
   $: parseQuery(sqlQuery);
 
-  $: if (activeTable && selectedColumn && searchValue) {
+  function updateSqlQuery() {
+    if (!activeTable || !selectedColumn || !searchValue) return;
     const col = ptInstructs.find((c) => c.key === selectedColumn);
     const isNumber = col && /int|real|num|float/i.test(col.valueType);
     const escaped = searchValue.replace(/'/g, "''");
@@ -91,10 +92,7 @@
       isNumber && !isNaN(searchValue)
         ? `"${selectedColumn}" = ${Number(searchValue)}`
         : `"${selectedColumn}" LIKE '%${escaped}%'`;
-    const newQuery = `SELECT * FROM "${activeTable}" WHERE ${clause};`;
-    if (newQuery !== sqlQuery) {
-      sqlQuery = newQuery;
-    }
+    sqlQuery = `SELECT * FROM "${activeTable}" WHERE ${clause};`;
   }
 
   function inferColValsType(value) {
@@ -307,6 +305,7 @@
             list="columns"
             class="border rounded w-full p-2"
             bind:value={selectedColumn}
+            on:input={updateSqlQuery}
           />
           <datalist id="columns">
             {#each ptInstructs as col}
@@ -316,7 +315,7 @@
         </Label>
         <Label class="space-y-2">
           <Span>Search value</Span>
-          <Input type="text" bind:value={searchValue} />
+          <Input type="text" bind:value={searchValue} on:input={updateSqlQuery} />
         </Label>
         <Button size="sm" on:click={runBuilderQuery}>Search</Button>
       </div>
