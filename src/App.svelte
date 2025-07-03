@@ -126,9 +126,50 @@
   async function getSqliteFiles() {
     const apiUrl =
       "https://api.github.com/repos/CNAG-Biomedical-Informatics/cbi-datahub/contents/sqlite";
+
+    console.log("Fetching SQLite files from:", apiUrl);
     try {
       const res = await fetch(apiUrl);
-      if (!res.ok) return [];
+
+      // Check for GitHub rate limiting
+      const remaining = res.headers.get("X-RateLimit-Remaining");
+      const reset = res.headers.get("X-RateLimit-Reset");
+      const resetDate = reset
+        ? new Date(parseInt(reset, 10) * 1000).toLocaleString()
+        : "unknown";
+      console.log(
+        `GitHub API rate limit: ${remaining} remaining, resets at ${resetDate}`
+      );
+      if (res.status === 403 && remaining === "0") {
+        const resetDate = reset ? new Date(parseInt(reset, 10) * 1000) : null;
+        console.error(
+          `GitHub API rate limit exceeded. ${
+            resetDate
+              ? `Rate limit resets at ${resetDate.toLocaleString()}`
+              : ""
+          }`
+        );
+        return [];
+      }
+
+      if (!res.ok) {
+        console.error(`GitHub API returned status ${res.status}`);
+        return [
+          {
+            name: "omim.db",
+            type: "file",
+            download_url:
+              "https://raw.githubusercontent.com/CNAG-Biomedical-Informatics/cbi-datahub/main/sqlite/omim.db",
+          },
+          {
+            name: "tcga.db",
+            type: "file",
+            download_url:
+              "https://raw.githubusercontent.com/CNAG-Biomedical-Informatics/cbi-datahub/main/sqlite/tcga.db",
+          },
+        ];
+      }
+
       const data = await res.json();
       return data
         .filter(
@@ -143,7 +184,7 @@
             `https://raw.githubusercontent.com/CNAG-Biomedical-Informatics/cbi-datahub/main/sqlite/${item.name}`,
         }));
     } catch (e) {
-      console.error(e);
+      console.error("Error fetching SQLite files:", e);
       return [];
     }
   }
