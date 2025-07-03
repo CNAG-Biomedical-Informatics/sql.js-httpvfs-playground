@@ -307,6 +307,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sveltejs/adapter-auto@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "@sveltejs/adapter-auto@npm:6.0.1"
+  peerDependencies:
+    "@sveltejs/kit": ^2.0.0
+  checksum: 10c0/03811f82cda2f86913a7fc7c0e1d061b4fbf661454f48a560a11e089be789661a74b775832ebd28970499b45acd4a82095a3feb220cb8504f2b5b5444587d4ee
+  languageName: node
+  linkType: hard
+
 "@sveltejs/vite-plugin-svelte@npm:^1.1.0":
   version: 1.4.0
   resolution: "@sveltejs/vite-plugin-svelte@npm:1.4.0"
@@ -581,6 +590,7 @@ __metadata:
     "@muonw/powertable": "npm:^2.3.5"
     "@novacbn/svelte-codejar": "npm:^0.1.2"
     "@popperjs/core": "npm:^2.11.6"
+    "@sveltejs/adapter-auto": "npm:^6.0.1"
     "@sveltejs/vite-plugin-svelte": "npm:^1.1.0"
     autoprefixer: "npm:^10.4.7"
     classnames: "npm:^2.3.2"

@@ -31,6 +31,7 @@ const RAW_RUNTIME_STATE =
           ["@muonw/powertable", "npm:2.3.5::__archiveUrl=https%3A%2F%2Fnode.pkgreg.com%2F%40muonw%252Fpowertable%2F2.3.5%2Fpowertable-2.3.5.tgz"],\
           ["@novacbn/svelte-codejar", "npm:0.1.2"],\
           ["@popperjs/core", "npm:2.11.8"],\
+          ["@sveltejs/adapter-auto", "virtual:f40b15d83ca99da3d78990752c4cbb061bdc331ba4bdabb925c3a11b1ae05c9b279213b8f990388f6e223f78a04d6f7678a1064fadad00627657f0bc123d3a1d#npm:6.0.1"],\
           ["@sveltejs/vite-plugin-svelte", "virtual:f40b15d83ca99da3d78990752c4cbb061bdc331ba4bdabb925c3a11b1ae05c9b279213b8f990388f6e223f78a04d6f7678a1064fadad00627657f0bc123d3a1d#npm:1.4.0"],\
           ["autoprefixer", "virtual:f40b15d83ca99da3d78990752c4cbb061bdc331ba4bdabb925c3a11b1ae05c9b279213b8f990388f6e223f78a04d6f7678a1064fadad00627657f0bc123d3a1d#npm:10.4.21"],\
           ["classnames", "npm:2.5.1"],\
@@ -396,6 +397,28 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@sveltejs/adapter-auto", [\
+      ["npm:6.0.1", {\
+        "packageLocation": "../../../../../.yarn/berry/cache/@sveltejs-adapter-auto-npm-6.0.1-ae6ea501ae-10c0.zip/node_modules/@sveltejs/adapter-auto/",\
+        "packageDependencies": [\
+          ["@sveltejs/adapter-auto", "npm:6.0.1"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:f40b15d83ca99da3d78990752c4cbb061bdc331ba4bdabb925c3a11b1ae05c9b279213b8f990388f6e223f78a04d6f7678a1064fadad00627657f0bc123d3a1d#npm:6.0.1", {\
+        "packageLocation": "./.yarn/__virtual__/@sveltejs-adapter-auto-virtual-1c5bacff32/6/.yarn/berry/cache/@sveltejs-adapter-auto-npm-6.0.1-ae6ea501ae-10c0.zip/node_modules/@sveltejs/adapter-auto/",\
+        "packageDependencies": [\
+          ["@sveltejs/adapter-auto", "virtual:f40b15d83ca99da3d78990752c4cbb061bdc331ba4bdabb925c3a11b1ae05c9b279213b8f990388f6e223f78a04d6f7678a1064fadad00627657f0bc123d3a1d#npm:6.0.1"],\
+          ["@sveltejs/kit", null],\
+          ["@types/sveltejs__kit", null]\
+        ],\
+        "packagePeers": [\
+          "@sveltejs/kit",\
+          "@types/sveltejs__kit"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@sveltejs/vite-plugin-svelte", [\
       ["npm:1.4.0", {\
         "packageLocation": "../../../../../.yarn/berry/cache/@sveltejs-vite-plugin-svelte-npm-1.4.0-5b718c940b-10c0.zip/node_modules/@sveltejs/vite-plugin-svelte/",\
@@ -723,6 +746,7 @@ const RAW_RUNTIME_STATE =
           ["@muonw/powertable", "npm:2.3.5::__archiveUrl=https%3A%2F%2Fnode.pkgreg.com%2F%40muonw%252Fpowertable%2F2.3.5%2Fpowertable-2.3.5.tgz"],\
           ["@novacbn/svelte-codejar", "npm:0.1.2"],\
           ["@popperjs/core", "npm:2.11.8"],\
+          ["@sveltejs/adapter-auto", "virtual:f40b15d83ca99da3d78990752c4cbb061bdc331ba4bdabb925c3a11b1ae05c9b279213b8f990388f6e223f78a04d6f7678a1064fadad00627657f0bc123d3a1d#npm:6.0.1"],\
           ["@sveltejs/vite-plugin-svelte", "virtual:f40b15d83ca99da3d78990752c4cbb061bdc331ba4bdabb925c3a11b1ae05c9b279213b8f990388f6e223f78a04d6f7678a1064fadad00627657f0bc123d3a1d#npm:1.4.0"],\
           ["autoprefixer", "virtual:f40b15d83ca99da3d78990752c4cbb061bdc331ba4bdabb925c3a11b1ae05c9b279213b8f990388f6e223f78a04d6f7678a1064fadad00627657f0bc123d3a1d#npm:10.4.21"],\
           ["classnames", "npm:2.5.1"],\

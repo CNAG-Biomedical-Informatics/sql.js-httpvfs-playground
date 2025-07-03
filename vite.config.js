@@ -16,19 +16,4 @@ export default defineConfig({
       allow: [projectRoot, workerDir],
     },
   },
-  // resolve: {
-  //   alias: {
-  //     '@muonw/powertable': fileURLToPath(new URL('./node_modules/@muonw/powertable/index.js', import.meta.url))
-  //   },
-  // },
-  // optimizeDeps: {
-  //   // Don’t let esbuild try to optimize the Lucide package—
-  //   // let plugin-svelte handle those .svelte files.
-  //   exclude: [
-  //     'lucide-svelte',
-  //     'flowbite-svelte',
-  //     '@novacbn/svelte-codejar',
-  //     '@muonw/powertable',
-  //   ],
-  // },
 })

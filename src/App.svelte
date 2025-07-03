@@ -83,6 +83,18 @@
 
   $: parseQuery(sqlQuery);
 
+  function updateSqlQuery() {
+    if (!activeTable || !selectedColumn || !searchValue) return;
+    const col = ptInstructs.find((c) => c.key === selectedColumn);
+    const isNumber = col && /int|real|num|float/i.test(col.valueType);
+    const escaped = searchValue.replace(/'/g, "''");
+    const clause =
+      isNumber && !isNaN(searchValue)
+        ? `"${selectedColumn}" = ${Number(searchValue)}`
+        : `"${selectedColumn}" LIKE '%${escaped}%'`;
+    sqlQuery = `SELECT * FROM "${activeTable}" WHERE ${clause};`;
+  }
+
   function inferColValsType(value) {
     if (!isNaN(value) && value !== "") return "number";
     return "string";
@@ -264,14 +276,15 @@
 
 <Header />
 
-<main class="pt-8 pb-12 lg:pt-12 lg:pb-12 bg-white">
-  <div class=" px-4 mx-auto max-w-screen-xl">
+<main class="lg:pt-4">
+  <div class="mx-auto max-w-screen-xl">
     {#if sqliteFiles.length}
       <div class="border-b mb-4">
-        <nav class="flex space-x-4" aria-label="Tabs">
+        <!-- TODO: replace below with flowbite Tabs -->
+        <nav class="space-x-4" aria-label="Tabs">
           {#each sqliteFiles as f}
             <button
-              class={`py-2 px-4 text-sm font-medium border-b-2 ${
+              class={`font-medium border-b-2 ${
                 activeTable.replace(/\_table$/, "") ===
                 f.name.replace(/\.db$/, "")
                   ? "border-blue-600 text-blue-600"
@@ -285,85 +298,63 @@
         </nav>
       </div>
     {/if}
-    <div class="p-6 space-y-4">
-      <div class="space-y-2">
-        <Label class="space-y-2">
-          <Span>Column</Span>
-          <input
-            list="columns"
-            class="border rounded w-full p-2"
-            bind:value={selectedColumn}
-          />
-          <datalist id="columns">
-            {#each ptInstructs as col}
-              <option value={col.key} />
-            {/each}
-          </datalist>
-        </Label>
-        <Label class="space-y-2">
-          <Span>Search value</Span>
-          <Input type="text" bind:value={searchValue} />
-        </Label>
-        <Button size="sm" on:click={runBuilderQuery}>Search</Button>
-      </div>
-      <details>
-        <summary class="cursor-pointer underline"
-          >Expand to show and modify the SQL query</summary
-        >
-        <div class="mt-4">
-          <Label class="space-y-2">
-            <CodeJar bind:value={sqlQuery} syntax="sql" {highlight} />
-          </Label>
-          <div class="mt-2">
-            <Button on:click={() => runQuery()}>
-              {#if querying}
-                <Spinner class="mr-3" size="4" color="white" /> Querying ...
-              {:else}
-                Run Query
-              {/if}
-            </Button>
-          </div>
-        </div>
-      </details>
-    </div>
+    <Label>
+      <Span>Column</Span>
+      <input
+        list="columns"
+        class="border rounded w-full p-2"
+        bind:value={selectedColumn}
+        on:input={updateSqlQuery}
+      />
+      <datalist id="columns">
+        {#each ptInstructs as col}
+          <option value={col.key} />
+        {/each}
+      </datalist>
+    </Label>
+    <Label>
+      <Span>Search value</Span>
+      <Input type="text" bind:value={searchValue} on:input={updateSqlQuery} />
+    </Label>
+    <details>
+      <summary class="cursor-pointer pt-2 pb-1 text-sm text-gray-500">
+        Expand to show and modify the SQL query</summary
+      >
+      <Label>
+        <CodeJar bind:value={sqlQuery} syntax="sql" {highlight} />
+      </Label>
+    </details>
+    <Button on:click={() => runQuery()}>
+      {#if querying}
+        <Spinner class="me-3" size="4" /> Querying ...
+      {:else}
+        Run Query
+      {/if}
+    </Button>
 
     {#if result}
       {#if timeTaken}
-        <div class="p-6 mt-2">
-          <Alert>
-            Query took <span class="font-medium">{timeTaken}</span> ms to read
-            <span class="font-medium">{prettyBytes(bytesRead)}</span>
-            with
-            <span class="font-medium">{totalRequests}</span> requests from the
-            database of
-            <span class="font-medium">{prettyBytes(totalBytes)}</span>, and
-            returned
-            <span class="font-medium">
-              {pluralize("row", result.length, true)}</span
-            >
-            equivalent to
-            <span class="font-medium">{prettyBytes(jsonFile.size)}</span> of JSON.
-          </Alert>
-        </div>
+        <!-- replace with icon mouse-over -->
+        <Alert>
+          Query took <span class="font-medium">{timeTaken}</span> ms to read
+          <span class="font-medium">{prettyBytes(bytesRead)}</span>
+          with
+          <span class="font-medium">{totalRequests}</span> requests from the
+          database of
+          <span class="font-medium">{prettyBytes(totalBytes)}</span>, and
+          returned
+          <span class="font-medium">
+            {pluralize("row", result.length, true)}</span
+          >
+          equivalent to
+          <span class="font-medium">{prettyBytes(jsonFile.size)}</span> of JSON.
+        </Alert>
       {/if}
-      <div class="p-6">
-        <div class="MuonW PowerTable">
-          <PowerTable
-            ptData={result}
-            class="text-sm border border-gray-300"
-            headerClass="bg-gray-100 text-left font-semibold"
-            rowClass="hover:bg-gray-50"
-            {ptOptions}
-            {ptInstructs}
-          />
-        </div>
-      </div>
+      <PowerTable ptData={result} {ptOptions} {ptInstructs} />
 
       <div class="p-4">
         <ButtonGroup>
           <Button
-            color="light"
-            size="xs"
             on:click={() => {
               const blob = jsonFile;
               saveAs(blob, "result.json");
@@ -373,8 +364,6 @@
             Download as JSON
           </Button>
           <Button
-            color="light"
-            size="xs"
             on:click={() => {
               const blob = new Blob([PapaParse.unparse(result)], {
                 type: "text/csv",
