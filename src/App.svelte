@@ -13,6 +13,7 @@
   import { onMount } from "svelte";
   import { Sheet, FileJson2 } from "lucide-svelte";
   import { CodeJar } from "@novacbn/svelte-codejar";
+  import Header from "./Header.svelte";
 
   import { createDbWorker } from "sql.js-httpvfs";
 
@@ -234,6 +235,8 @@
     }
   }
 </script>
+
+<Header />
 
 <main class="pt-8 pb-12 lg:pt-12 lg:pb-12 bg-white">
   <div class=" px-4 mx-auto max-w-screen-xl">
