@@ -6,7 +6,7 @@
   onMount(() => {
     dark =
       document.documentElement.classList.contains("dark") ||
-      window.matchMedia("(prefers-color-scheme: dark)").matches;
+      window.matchMedia("(prefers-color-scheme: white)").matches;
     if (dark) document.documentElement.classList.add("dark");
   });
 
