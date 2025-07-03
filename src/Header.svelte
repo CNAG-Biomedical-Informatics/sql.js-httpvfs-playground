@@ -19,7 +19,7 @@
 <header class="bg-white border-b dark:bg-gray-800">
   <div class="max-w-screen-xl mx-auto flex items-center justify-between p-4">
     <span class="flex items-center space-x-2">
-      <img src="/pheno-ranker-favicon-2x.png" alt="logo" class="h-8 w-8" />
+      <img src="pheno-ranker-favicon-2x.png" alt="logo" class="h-8 w-8" />
       <span class="text-lg font-semibold whitespace-nowrap"
         >Pheno-Ranker Use Cases Playground</span
       >
