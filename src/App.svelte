@@ -123,6 +123,9 @@
     return ptInstructs;
   }
 
+  // TODO
+  // maybe better only hit this GitHub API once per deployment
+  // and store the results in a static file
   async function getSqliteFiles() {
     const apiUrl =
       "https://api.github.com/repos/CNAG-Biomedical-Informatics/cbi-datahub/contents/sqlite";
