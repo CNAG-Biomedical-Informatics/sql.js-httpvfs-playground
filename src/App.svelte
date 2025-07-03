@@ -83,6 +83,20 @@
 
   $: parseQuery(sqlQuery);
 
+  $: if (activeTable && selectedColumn && searchValue) {
+    const col = ptInstructs.find((c) => c.key === selectedColumn);
+    const isNumber = col && /int|real|num|float/i.test(col.valueType);
+    const escaped = searchValue.replace(/'/g, "''");
+    const clause =
+      isNumber && !isNaN(searchValue)
+        ? `"${selectedColumn}" = ${Number(searchValue)}`
+        : `"${selectedColumn}" LIKE '%${escaped}%'`;
+    const newQuery = `SELECT * FROM "${activeTable}" WHERE ${clause};`;
+    if (newQuery !== sqlQuery) {
+      sqlQuery = newQuery;
+    }
+  }
+
   function inferColValsType(value) {
     if (!isNaN(value) && value !== "") return "number";
     return "string";
