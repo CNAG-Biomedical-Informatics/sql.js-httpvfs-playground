@@ -4,10 +4,9 @@
     Alert,
     Button,
     ButtonGroup,
-    Heading,
     Input,
     Label,
-    P,
+    Span,
     Spinner,
   } from "flowbite-svelte";
   import { onMount } from "svelte";
@@ -61,6 +60,25 @@
   };
 
   let ptInstructs = [];
+
+  function parseQuery(query = sqlQuery) {
+    const fromMatch = query.match(/from\s+\"?([\w-.]+)\"?/i);
+    if (fromMatch) {
+      activeTable = fromMatch[1];
+    }
+    const whereMatch = query.match(
+      /where\s+\"?([^\"\s]+)\"?\s*(?:=|like)\s*['"]?([^'";]*)/i
+    );
+    if (whereMatch) {
+      selectedColumn = whereMatch[1];
+      searchValue = whereMatch[2];
+    } else {
+      selectedColumn = "";
+      searchValue = "";
+    }
+  }
+
+  $: parseQuery(sqlQuery);
 
   function inferColValsType(value) {
     if (!isNaN(value) && value !== "") return "number";
@@ -211,11 +229,16 @@
     error = false;
     try {
       let queryData = pTime(() => queryDb(url, query));
-      const data = await queryData();
+      let queryPromise = queryData();
+
+      const data = await queryPromise;
+      console.log("Query executed: ", query);
+      console.log("Query data: ", data);
+      console.log("Query result: ", data);
 
       result = data.result;
       await updateInstructs(result, activeTable);
-      timeTaken = queryData.time;
+      timeTaken = queryPromise.time;
       bytesRead = data.bytesRead;
       totalRequests = data.stats.totalRequests;
       totalBytes = data.stats.totalBytes;
@@ -262,7 +285,7 @@
     <div class="p-6 space-y-4">
       <div class="space-y-2">
         <Label class="space-y-2">
-          <span>Column</span>
+          <Span>Column</Span>
           <input
             list="columns"
             class="border rounded w-full p-2"
@@ -275,7 +298,7 @@
           </datalist>
         </Label>
         <Label class="space-y-2">
-          <span>Search value</span>
+          <Span>Search value</Span>
           <Input type="text" bind:value={searchValue} />
         </Label>
         <Button size="sm" on:click={runBuilderQuery}>Search</Button>
@@ -286,7 +309,6 @@
         >
         <div class="mt-4">
           <Label class="space-y-2">
-            <span>Edit SQL Query</span>
             <CodeJar bind:value={sqlQuery} syntax="sql" {highlight} />
           </Label>
           <div class="mt-2">
