@@ -1,48 +1,43 @@
 <script>
-  import { Button, ButtonGroup } from "flowbite-svelte";
-  import { Spinner, Alert } from "flowbite-svelte";
-  import { Heading, P, A } from "flowbite-svelte";
-  import { Select, Input, Label, Helper } from "flowbite-svelte";
+  import {
+    A,
+    Alert,
+    Button,
+    ButtonGroup,
+    Heading,
+    Input,
+    Label,
+    P,
+    Spinner,
+  } from "flowbite-svelte";
   import { onMount } from "svelte";
+  import { Sheet, FileJson2 } from "lucide-svelte";
+  import { CodeJar } from "@novacbn/svelte-codejar";
 
   import { createDbWorker } from "sql.js-httpvfs";
-  import { PowerTable } from "@muonw/powertable";
-  import { Sheet, FileJson2 } from "lucide-svelte";
 
   import pTime from "p-time";
   import saveAs from "file-saver";
+
   // @ts-ignore
   import PapaParse from "papaparse";
   import prettyBytes from "pretty-bytes";
   import pluralize from "pluralize";
 
-  import { CodeJar } from "@novacbn/svelte-codejar";
+  import Prism from "prismjs";
+  import "prismjs/components/prism-sql";
 
+  import { PowerTable } from "@muonw/powertable";
   import "@muonw/powertable/styles/power-table.scss";
   // import "@muonw/powertable/styles/power-table-mascara.scss";
 
-  let pageSize = "1024";
-  let pageSizes = [
-    { value: "512", name: "512" },
-    { value: "1024", name: "1024" },
-    { value: "2048", name: "2048" },
-    { value: "4096", name: "4096" },
-    { value: "8192", name: "8192" },
-    { value: "16384", name: "16384" },
-    { value: "32768", name: "32768" },
-  ];
+  let pageSize = "1024"; // Default page size for the database worker
   let sqlQuery = `SELECT * FROM tcga_table LIMIT 20;`;
   let activeTable = "";
   let selectedColumn = "";
   let searchValue = "";
-  // let dbUrl = "https://nishad.github.io/sql.js-httpvfs-playground/db/imdb-titles-100000_1024_indexed.db";
-  // let dbUrl =
-  // "https://cnag-biomedical-informatics.github.io/sql.js-httpvfs-playground/db/tcga.db";
   let dbUrl =
     "https://raw.githubusercontent.com/CNAG-Biomedical-Informatics/cbi-datahub/refs/heads/main/sqlite/tcga.db";
-
-  import Prism from "prismjs";
-  import "prismjs/components/prism-sql";
 
   const highlight = (code, syntax) =>
     Prism.highlight(code, Prism.languages[syntax], syntax);
@@ -244,25 +239,8 @@
   <div class=" px-4 mx-auto max-w-screen-xl">
     <div class="p-8">
       <Heading tag="h2" customeSize="text-4xl font-extrabold "
-        >sql.js-httpvfs Playground</Heading
+        >Pheno-Ranker Use Cases Playground</Heading
       >
-      <P class="my-4 text-gray-500">
-        This is a fork of nishad's sql.js-httpvfs playground
-      </P>
-      <A href="https://github.com/nishad/sql.js-httpvfs-playground"
-        >Check it out here:
-        <svg
-          class="ml-1 w-6 h-6"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-          ><path
-            fill-rule="evenodd"
-            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-            clip-rule="evenodd"
-          /></svg
-        >
-      </A>
     </div>
 
     {#if sqliteFiles.length}
@@ -404,3 +382,23 @@
     rel="stylesheet"
   />
 </svelte:head>
+
+<footer class="bg-gray-100 text-center py-4 mt-8">
+  <span class="text-sm text-gray-600">
+    Copyright &copy; 2025
+    <A
+      href="https://github.com/CNAG-Biomedical-Informatics"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      CNAG-Biomedical-Informatics
+    </A>
+    inspired by
+    <A
+      href="https://github.com/nishad/sql.js-httpvfs-playground"
+      target="_blank"
+      rel="noopener noreferrer"
+      >nishad's sql.js-httpvfs-playground
+    </A>
+  </span>
+</footer>
