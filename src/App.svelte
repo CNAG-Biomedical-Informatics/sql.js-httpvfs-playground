@@ -13,6 +13,7 @@
   import { onMount } from "svelte";
   import { Sheet, FileJson2 } from "lucide-svelte";
   import { CodeJar } from "@novacbn/svelte-codejar";
+  import Header from "./Header.svelte";
 
   import { createDbWorker } from "sql.js-httpvfs";
 
@@ -235,27 +236,24 @@
   }
 </script>
 
+<Header />
+
 <main class="pt-8 pb-12 lg:pt-12 lg:pb-12 bg-white">
   <div class=" px-4 mx-auto max-w-screen-xl">
-    <div class="p-8">
-      <Heading tag="h2" customeSize="text-4xl font-extrabold "
-        >Pheno-Ranker Use Cases Playground</Heading
-      >
-    </div>
-
     {#if sqliteFiles.length}
       <div class="border-b mb-4">
         <nav class="flex space-x-4" aria-label="Tabs">
           {#each sqliteFiles as f}
             <button
               class={`py-2 px-4 text-sm font-medium border-b-2 ${
-                activeFile === f.name
+                activeTable.replace(/\_table$/, "") ===
+                f.name.replace(/\.db$/, "")
                   ? "border-blue-600 text-blue-600"
                   : "border-transparent text-gray-500"
               }`}
               on:click={() => loadDb(f)}
             >
-              {f.name}
+              {f.name.replace(/\.db$/, "").toUpperCase()}
             </button>
           {/each}
         </nav>
